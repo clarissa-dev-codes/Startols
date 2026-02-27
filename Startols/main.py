@@ -3,8 +3,12 @@
 import pygame
 import sys
 import math
+import ButtonFunction
 
 pygame.init()
+
+#where the icon code should go (needs to be 32x32)
+
 
 #this is measured in pixels
 WIDTH, HEIGHT = 1000, 800
@@ -39,6 +43,8 @@ rarexpos = HEIGHT//4
 rareypos = WIDTH//5
 legendxpos = HEIGHT//1.2
 legendypos = WIDTH//5
+titlexpos = HEIGHT//1.8
+titleypos = WIDTH//2.7
 
 try:
     season_image = pygame.image.load("SeasonalEgg.png").convert_alpha()
@@ -64,6 +70,9 @@ legend_rect = legend_image.get_rect()
 scaled_legend_egg = pygame.transform.scale(legend_image, (season_width, season_height))
 legend_egg_rect = scaled_legend_egg.get_rect(topleft=(legendxpos, legendypos))
 
+start_button = ButtonFunction.ButtonFunction("Start", titlexpos, titleypos +200, 100, 50, None)
+buttons = [start_button]
+
 amp = 20
 frequency = 0.002
 
@@ -72,6 +81,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        for button in buttons:
+            button.handle_event(event)
 
     time = pygame.time.get_ticks()
 
@@ -86,6 +98,11 @@ while running:
     window.blit(scaled_common_egg, common_egg_rect)
     window.blit(scaled_rare_egg, rare_egg_rect)
     window.blit(scaled_legend_egg, legend_egg_rect)
+
+    pygame.draw.rect(window, WHITE, (titlexpos, titleypos, 100, 30), 0)
+
+    for button in buttons:
+        button.draw(window)
 
     pygame.display.flip()
 
