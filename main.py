@@ -16,7 +16,7 @@ class MainManager:
 
         self.states = {
             "START": StartScreen(self.WIDTH, self.HEIGHT),
-            "LOADING": LoadingScreen(self.WIDTH, self.HEIGHT, self.shared_bg )
+            "LOADING": LoadingScreen(self.WIDTH, self.HEIGHT, self.shared_bg)
         }
         self.current_state = self.states["START"]
 
@@ -26,6 +26,8 @@ class MainManager:
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
+                    if self.current_state == self.states["GAMEPLAY"]:
+                        self.states["GAMEPLAY"].pet.save_game()
                     pygame.quit()
                     sys.exit()
 
